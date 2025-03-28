@@ -37,6 +37,7 @@ def add_transaction():
     while len(description) < 5 or description.isnumeric():
         description = input("Description is too short. Please enter the appropiate description:")
 
+
     transaction["date"] = date
     transaction["amount"] = amount
     transaction["category"] = category
