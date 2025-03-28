@@ -1,8 +1,8 @@
 from datetime import datetime
-
+import csv, time
 
 def add_transaction():
-    transaction = {}
+    transaction_data = {}
     date_format = '%Y-%m-%d'
 
     print("Please input the details of your transaction")
@@ -30,22 +30,46 @@ def add_transaction():
     category = input("Enter the transaction category(expense/income): ").lower()
     while category not in categories:
         category = input("Enter the transaction category(expense/income): ")
-    if category == "expense":
-        amount = 0 - amount
 
     description = input("Enter transaction description: ")
     while len(description) < 5 or description.isnumeric():
-        description = input("Description is too short. Please enter the appropiate description:")
+        description = input("Description is too short. Please enter the appropriate description:")
 
 
-    transaction["date"] = date
-    transaction["amount"] = amount
-    transaction["category"] = category
-    transaction["description"] = description
+    transaction_data["date"] = date
+    transaction_data["amount"] = amount
+    transaction_data["category"] = category
+    transaction_data["description"] = description
 
 
-    return transaction
+    return transaction_data
 
-print(add_transaction())
+csv_fields = ['date','amount','category','description']
+rows = []
+
+with open("transactions.csv","w+") as csv_file:
+    csv_writer = csv.writer(csv_file)
+
+    csv_writer.writerow(csv_fields)
+    start_trans_storage = input("Would you like to note your transaction (y/n)? ")
+    while True:
+        if start_trans_storage.lower() != 'y':
+            print("Exiting program...")
+            time.sleep(2)
+            print("3")
+            time.sleep(2)
+            print("2")
+            time.sleep(2)
+            print("1")
+            break
+        transaction = add_transaction()
+        rows.append(list(transaction.values()))
+        csv_writer.writerow(rows)
+        start_trans_storage = input("Would you like to add another transaction (y/n)? ")
+
+
+
+
+
 
 
