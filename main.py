@@ -1,7 +1,10 @@
 from datetime import datetime
-import csv, time
+import csv, time, sys
 
 def add_transaction():
+    '''
+    Returns: transaction [date/ int / str/ str]
+    '''
     transaction_data = {}
     date_format = '%Y-%m-%d'
 
@@ -9,7 +12,7 @@ def add_transaction():
     while True:
         try:
             date = input("Enter the date (YYYY-mm-dd): ")
-            date = datetime.strptime(date,date_format).date()
+            date = datetime.strptime(date,date_format).date().isoformat()
             break
         except ValueError:
             print("Invalid date. Please use the format YYYY-MM-DD.")
@@ -47,25 +50,32 @@ def add_transaction():
 csv_fields = ['date','amount','category','description']
 rows = []
 
-with open("transactions.csv","w+") as csv_file:
-    csv_writer = csv.writer(csv_file)
+with open("transactions.csv","a+", newline='') as csv_file:
 
-    csv_writer.writerow(csv_fields)
-    start_trans_storage = input("Would you like to note your transaction (y/n)? ")
+    csv_file.seek(0) #set poiter to top of the page
+
+    first_line = csv_file.readline()
+
+    csv_writer = csv.writer(csv_file)
+    if first_line == '':
+        csv_writer.writerow(csv_fields)
+    start_transaction_storage = input("Would you like to note your transaction (y/n)? ")
     while True:
-        if start_trans_storage.lower() != 'y':
+        if start_transaction_storage.lower() != 'y':
             print("Exiting program...")
-            time.sleep(2)
+            time.sleep(1)
             print("3")
-            time.sleep(2)
+            time.sleep(1)
             print("2")
-            time.sleep(2)
+            time.sleep(1)
             print("1")
             break
         transaction = add_transaction()
-        rows.append(list(transaction.values()))
-        csv_writer.writerow(rows)
-        start_trans_storage = input("Would you like to add another transaction (y/n)? ")
+        transaction_values = [transaction[field] for field in transaction]
+
+        rows.append(transaction_values)
+        start_transaction_storage = input("Would you like to add another transaction (y/n)? ")
+    csv_writer.writerows(rows)
 
 
 
