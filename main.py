@@ -53,12 +53,12 @@ rows = []
 with open("transactions.csv","a+", newline='') as csv_file:
 
     csv_file.seek(0) #set poiter to top of the page
-
     first_line = csv_file.readline()
-
     csv_writer = csv.writer(csv_file)
-    if first_line == '':
+
+    if first_line.strip() == '':
         csv_writer.writerow(csv_fields)
+
     start_transaction_storage = input("Would you like to note your transaction (y/n)? ")
     while True:
         if start_transaction_storage.lower() != 'y':
@@ -79,7 +79,8 @@ with open("transactions.csv","a+", newline='') as csv_file:
 
 
 
-
+with open("transactions.csv","r+",newline='') as csv_read_file:
+    pass
 
 
 
