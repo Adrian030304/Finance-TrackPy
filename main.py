@@ -157,10 +157,15 @@ while True:
                         print(f"{i + 1}. {fil}")
                     filter_choice = input("Choose a filter: ").strip().lower()
                     if filter_choice == "category":
-                        category_choice = input("Choose a category(expense/income): ")
+                        category_choice = input("Choose a category(expense/income): ").strip().lower()
+                        if category_choice not in ["expense","income"]:
+                            print("Category doesn't exist.")
+                            continue
+
                         for idx, tr in enumerate(read_rows):
                             if tr["category"] == category_choice:
                                 print(f'{idx + 1}. Date: {tr["date"]} | Amount: ${float(tr["amount"]):.2f} | Category: {tr["category"]} | Description: {tr["description"]}')
+                        break
 
                     elif filter_choice == "exit":
                         print("Going back to menu...")
