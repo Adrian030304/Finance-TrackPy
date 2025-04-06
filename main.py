@@ -2,9 +2,9 @@ from datetime import datetime
 import csv, time, sys
 
 def add_transaction():
-    '''
+    """
     Returns: transaction [date/ int / str/ str]
-    '''
+    """
     transaction_data = {}
     date_format = '%Y-%m-%d'
 
@@ -47,10 +47,6 @@ def add_transaction():
 
     return transaction_data
 
-csv_fields = ['date','amount','category','description']
-rows = []
-
-
 while True:
 
     print("|-|-| Transaction Menu |-|-|")
@@ -60,6 +56,8 @@ while True:
 
     command = input("Enter your choice: ").strip()
     if command == "1":
+        csv_fields = ['date', 'amount', 'category', 'description']
+        rows = []
         with open("transactions.csv", "a+", newline='') as csv_file:
 
             csv_file.seek(0)  # set poiter to top of the page
@@ -107,9 +105,8 @@ while True:
         for i in range(3,0,-1):
             time.sleep(1)
             print(f"{i}...")
-
         break
     else:
-        print("Invalid command")
+        print("Invalid command. Try again.")
 
 
