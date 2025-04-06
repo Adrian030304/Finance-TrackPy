@@ -47,6 +47,8 @@ def add_transaction():
 
     return transaction_data
 
+
+
 while True:
 
     print("|-|-| Transaction Menu |-|-|")
@@ -106,25 +108,25 @@ while True:
                 read_content = csv.DictReader(csv_summary)
                 read_rows = list(read_content)
 
-                expenses = float(0)
-                incomes = float(0)
+                total_expense = float(0)
+                total_income = float(0)
 
 
                 if not read_rows:
                     print("No transactions found.")
                 else:
                     for row in read_rows:
-                        amount = float(row["amount"])
+                        t_amount = float(row["amount"])
                         if row["category"] == "expense":
-                            expenses += amount
+                            total_expense += t_amount
                         else:
-                            incomes += amount
-                net_balance = incomes - expenses
+                            total_income += t_amount
+                net_balance = total_income - total_expense
 
                 print("\n")
                 print("## Transaction summary ##")
-                print(f'Total Income: ${incomes:.2f}')
-                print(f'Total Expense: ${expenses:.2f}')
+                print(f'Total Income: ${total_income:.2f}')
+                print(f'Total Expense: ${total_expense:.2f}')
                 print(f'Total Balance: ${net_balance:.2f}')
                 print("\n")
 
