@@ -69,10 +69,10 @@ while True:
             if first_line.strip() == '':
                 csv_writer.writerow(csv_fields)
 
-            start_transaction_storage = input("Would you like to note your transaction (y/n)? ").strip().lower()
+            start_transaction_storage = input("Would you like to add your transaction (y/n)? ").strip().lower()
             while True:
                 if start_transaction_storage.lower() != 'y':
-                    print("Exiting program...")
+                    print("Returning to menu...")
                     time.sleep(1)
                     print("3")
                     time.sleep(1)
@@ -88,7 +88,20 @@ while True:
             csv_writer.writerows(rows)
 
     elif command == "2":
-        print("View all transactions")
+        try:
+            with open("transactions.csv", "r+", newline='') as csv_read_file:
+                read_content = csv.DictReader(csv_read_file)
+
+                rows = list(read_content)
+                if not rows:
+                    print("No transactions found.")
+                else:
+                    for index, row in enumerate(read_content):
+                        print(
+                            f'{index}. Date: {row["date"]} | Amount: ${row["amount"]} | Category: {row["category"]} | Description: {row["description"]}')
+        except IOError as e:
+            print(f"Error reading file: {e}")
+
     elif command == "3":
         print("exits")
     else:
@@ -96,19 +109,6 @@ while True:
 
 
 
-
-try:
-    with open("transactions.csv","r+",newline='') as csv_read_file:
-        read_content = csv.DictReader(csv_read_file)
-
-        rows = list(read_content)
-        if not rows:
-            print("No transactions found.")
-        else:
-            for index, row in enumerate(read_content):
-                print(f'{index}. Date: {row["date"]} | Amount: ${row["amount"]} | Category: {row["category"]} | Description: {row["description"]}')
-except IOError as e:
-    print(f"Error reading file: {e}")
 
 
 
