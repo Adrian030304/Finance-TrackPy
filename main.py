@@ -48,7 +48,6 @@ def add_transaction():
     return transaction_data
 
 
-
 while True:
 
     print("|-|-| Transaction Menu |-|-|")
