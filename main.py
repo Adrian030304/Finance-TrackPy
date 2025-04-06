@@ -25,7 +25,7 @@ def add_transaction():
                 continue
             break
         except ValueError:
-            print("It is not a number!")
+            print("This is not a number!")
 
 
 
