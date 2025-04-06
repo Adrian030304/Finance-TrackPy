@@ -1,6 +1,9 @@
 from datetime import datetime
 import csv, time, sys
 
+from unicodedata import category
+
+
 def add_transaction():
     """
     Returns: transaction [date/ int / str/ str]
@@ -46,6 +49,10 @@ def add_transaction():
 
 
     return transaction_data
+
+def show_transaction(r):
+    for idx, tr in enumerate(r):
+        print(f'{idx+1}. Date: {tr["date"]} | Amount: ${float(tr["amount"]):.2f} | Category: {tr["category"]} | Description: {tr["description"]}')
 
 
 while True:
@@ -96,8 +103,7 @@ while True:
                 if not read_rows:
                     print("No transactions found.")
                 else:
-                    for index, row in enumerate(read_rows):
-                        print(f'{index}. Date: {row["date"]} | Amount: ${float(row["amount"]):.2f} | Category: {row["category"]} | Description: {row["description"]}')
+                    show_transaction(read_rows)
         except IOError as e:
             print(f"Error reading file: {e}")
 
@@ -142,15 +148,25 @@ while True:
                     continue
 
                 filters = ["category", "amount", "date", "description", "exit"]
-                print('\nTransaction filters:')
 
-                for i, fil in enumerate(filters):
-                    print(f"{i+1}. {fil}")
-                filter_choice = input("Choose a filter: ").strip().lower()
-                if filter_choice == "exit":
-                    print("Going back to menu...")
-                    continue
 
+
+                while True:
+                    print('\nTransaction filters:')
+                    for i, fil in enumerate(filters):
+                        print(f"{i + 1}. {fil}")
+                    filter_choice = input("Choose a filter: ").strip().lower()
+                    if filter_choice == "category":
+                        category_choice = input("Choose a category(expense/income): ")
+                        for idx, tr in enumerate(read_rows):
+                            if tr["category"] == category_choice:
+                                print(f'{idx + 1}. Date: {tr["date"]} | Amount: ${float(tr["amount"]):.2f} | Category: {tr["category"]} | Description: {tr["description"]}')
+
+                    elif filter_choice == "exit":
+                        print("Going back to menu...")
+                        break
+                    else:
+                        print("Invalid choice, try again.")
 
         except IOError as e:
             print(f"Error reading file: {e}")
