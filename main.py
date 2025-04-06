@@ -50,32 +50,51 @@ def add_transaction():
 csv_fields = ['date','amount','category','description']
 rows = []
 
-with open("transactions.csv","a+", newline='') as csv_file:
 
-    csv_file.seek(0) #set poiter to top of the page
-    first_line = csv_file.readline()
-    csv_writer = csv.writer(csv_file)
+while True:
 
-    if first_line.strip() == '':
-        csv_writer.writerow(csv_fields)
+    print("|-|-| Transaction Menu |-|-|")
+    print("1. Add a transaction")
+    print("2. View all transactions")
+    print("3. Exit")
 
-    start_transaction_storage = input("Would you like to note your transaction (y/n)? ")
-    while True:
-        if start_transaction_storage.lower() != 'y':
-            print("Exiting program...")
-            time.sleep(1)
-            print("3")
-            time.sleep(1)
-            print("2")
-            time.sleep(1)
-            print("1")
-            break
-        transaction = add_transaction()
-        transaction_values = [transaction[field] for field in transaction]
+    command = input("Enter your choice: ").strip()
+    if command == "1":
+        with open("transactions.csv", "a+", newline='') as csv_file:
 
-        rows.append(transaction_values)
-        start_transaction_storage = input("Would you like to add another transaction (y/n)? ")
-    csv_writer.writerows(rows)
+            csv_file.seek(0)  # set poiter to top of the page
+            first_line = csv_file.readline()
+            csv_writer = csv.writer(csv_file)
+
+            if first_line.strip() == '':
+                csv_writer.writerow(csv_fields)
+
+            start_transaction_storage = input("Would you like to note your transaction (y/n)? ").strip().lower()
+            while True:
+                if start_transaction_storage.lower() != 'y':
+                    print("Exiting program...")
+                    time.sleep(1)
+                    print("3")
+                    time.sleep(1)
+                    print("2")
+                    time.sleep(1)
+                    print("1")
+                    break
+                transaction = add_transaction()
+                transaction_values = [transaction[field] for field in transaction]
+
+                rows.append(transaction_values)
+                start_transaction_storage = input("Would you like to add another transaction (y/n)? ")
+            csv_writer.writerows(rows)
+
+    elif command == "2":
+        print("View all transactions")
+    elif command == "3":
+        print("exits")
+    else:
+        print("Invalid command")
+
+
 
 
 try:
