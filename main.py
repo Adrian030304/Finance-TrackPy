@@ -91,24 +91,22 @@ while True:
             with open("transactions.csv", "r+", newline='') as csv_read_file:
                 read_content = csv.DictReader(csv_read_file)
 
-                rows = list(read_content)
-                if not rows:
+                read_rows = list(read_content)
+                if not read_rows:
                     print("No transactions found.")
                 else:
-                    for index, row in enumerate(read_content):
-                        print(
-                            f'{index}. Date: {row["date"]} | Amount: ${row["amount"]} | Category: {row["category"]} | Description: {row["description"]}')
+                    for index, row in enumerate(read_rows):
+                        print(f'{index}. Date: {row["date"]} | Amount: ${float(row["amount"]):.2f} | Category: {row["category"]} | Description: {row["description"]}')
         except IOError as e:
             print(f"Error reading file: {e}")
     elif command == "3":
         try:
             with open("transactions.csv","r", newline='') as csv_summary:
                 read_content = csv.DictReader(csv_summary)
-                rows = list(read_content)
-                if not rows:
+                read_rows = list(read_content)
+                if not read_rows:
                     print("No transactions found.")
-                for row in read_content:
-                    print(row)
+
         except IOError as err:
             print(f"Error reading file: {e}")
     elif command == "4":
