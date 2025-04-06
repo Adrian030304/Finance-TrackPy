@@ -49,14 +49,12 @@ def add_transaction():
 
 
 while True:
-
-    print("|-|-| Transaction Menu |-|-|")
-
+    print("#" * 10)
+    print("|-|-| Transaction Menu |-|-| \n")
     options_list = ["Add a transaction", "View all transactions", "Transactions Summary","Filter Transactions","Exit"]
 
     for index, option in enumerate(options_list):
         print(f"{index + 1}. {option}")
-
 
     command = input("Enter your choice: ").strip()
     if command == "1":
@@ -135,6 +133,29 @@ while True:
         except IOError as err:
             print(f"Error reading file: {e}")
     elif command == "4":
+        try:
+            with open("transactions.csv", "r", newline='') as csv_filter:
+                read_content = csv.DictReader(csv_filter)
+                read_rows = list(read_content)
+                if not read_rows:
+                    print("No transactions found.")
+                    continue
+
+                filters = ["category", "amount", "date", "description", "exit"]
+                print('\nTransaction filters:')
+
+                for i, fil in enumerate(filters):
+                    print(f"{i+1}. {fil}")
+                filter_choice = input("Choose a filter: ").strip().lower()
+                if filter_choice == "exit":
+                    print("Going back to menu...")
+                    continue
+
+
+        except IOError as e:
+            print(f"Error reading file: {e}")
+
+    elif command == "5":
         print("Exiting program...")
         for i in range(3,0,-1):
             time.sleep(1)
