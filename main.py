@@ -103,13 +103,13 @@ while True:
             print(f"Error reading file: {e}")
 
     elif command == "3":
-        print("exits")
+        print("Exiting program...")
+        for i in range(3,0,-1):
+            time.sleep(1)
+            print(f"{i}...")
+
+        break
     else:
         print("Invalid command")
-
-
-
-
-
 
 
