@@ -51,10 +51,12 @@ def add_transaction():
 while True:
 
     print("|-|-| Transaction Menu |-|-|")
-    print("1. Add a transaction")
-    print("2. View all transactions")
-    print("3. Transactions summary")
-    print("4. Exit")
+
+    options_list = ["Add a transaction", "View all transactions", "Transactions Summary","Filter Transactions","Exit"]
+
+    for index, option in enumerate(options_list):
+        print(f"{index + 1}. {option}")
+
 
     command = input("Enter your choice: ").strip()
     if command == "1":
