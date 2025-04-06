@@ -1,7 +1,10 @@
 from datetime import datetime
-import csv, time
+import csv, time, sys
 
 def add_transaction():
+    """
+    Returns: transaction [date/ int / str/ str]
+    """
     transaction_data = {}
     date_format = '%Y-%m-%d'
 
@@ -22,7 +25,7 @@ def add_transaction():
                 continue
             break
         except ValueError:
-            print("It is not a number!")
+            print("This is not a number!")
 
 
 
@@ -44,33 +47,98 @@ def add_transaction():
 
     return transaction_data
 
-csv_fields = ['date','amount','category','description']
-rows = []
 
-with open("transactions.csv","w+") as csv_file:
-    csv_writer = csv.writer(csv_file)
+while True:
 
-    csv_writer.writerow(csv_fields)
-    start_transaction_storage = input("Would you like to note your transaction (y/n)? ")
-    while True:
-        if start_transaction_storage.lower() != 'y':
-            print("Exiting program...")
+    print("|-|-| Transaction Menu |-|-|")
+    print("1. Add a transaction")
+    print("2. View all transactions")
+    print("3. Transactions summary")
+    print("4. Exit")
+
+    command = input("Enter your choice: ").strip()
+    if command == "1":
+        csv_fields = ['date', 'amount', 'category', 'description']
+        rows = []
+        with open("transactions.csv", "a+", newline='') as csv_file:
+
+            csv_file.seek(0)  # set poiter to top of the page
+            first_line = csv_file.readline()
+            csv_writer = csv.writer(csv_file)
+
+            if first_line.strip() == '':
+                csv_writer.writerow(csv_fields)
+
+            start_transaction_storage = input("Would you like to add your transaction (y/n)? ").strip().lower()
+            while True:
+                if start_transaction_storage.lower() != 'y':
+                    print("Returning to menu...")
+                    time.sleep(1)
+                    print("3")
+                    time.sleep(1)
+                    print("2")
+                    time.sleep(1)
+                    print("1")
+                    break
+                transaction = add_transaction()
+                transaction_values = [transaction[field] for field in transaction]
+
+                rows.append(transaction_values)
+                start_transaction_storage = input("Would you like to add another transaction (y/n)? ")
+            csv_writer.writerows(rows)
+
+    elif command == "2":
+        try:
+            with open("transactions.csv", "r+", newline='') as csv_read_file:
+                read_content = csv.DictReader(csv_read_file)
+
+                read_rows = list(read_content)
+                if not read_rows:
+                    print("No transactions found.")
+                else:
+                    for index, row in enumerate(read_rows):
+                        print(f'{index}. Date: {row["date"]} | Amount: ${float(row["amount"]):.2f} | Category: {row["category"]} | Description: {row["description"]}')
+        except IOError as e:
+            print(f"Error reading file: {e}")
+
+    elif command == "3":
+        try:
+            with open("transactions.csv","r", newline='') as csv_summary:
+                read_content = csv.DictReader(csv_summary)
+                read_rows = list(read_content)
+
+                total_expense = float(0)
+                total_income = float(0)
+
+
+                if not read_rows:
+                    print("No transactions found.")
+                else:
+                    for row in read_rows:
+                        t_amount = float(row["amount"])
+                        if row["category"] == "expense":
+                            total_expense += t_amount
+                        else:
+                            total_income += t_amount
+                net_balance = total_income - total_expense
+
+                print("\n")
+                print("## Transaction summary ##")
+                print(f'Total Income: ${total_income:.2f}')
+                print(f'Total Expense: ${total_expense:.2f}')
+                print(f'Total Balance: ${net_balance:.2f}')
+                print("\n")
+
+
+        except IOError as err:
+            print(f"Error reading file: {e}")
+    elif command == "4":
+        print("Exiting program...")
+        for i in range(3,0,-1):
             time.sleep(1)
-            print("3")
-            time.sleep(1)
-            print("2")
-            time.sleep(1)
-            print("1")
-            break
-        transaction = add_transaction()
-        transaction_values = [value for value in transaction.values()]
-        rows.append(transaction_values)
-        start_transaction_storage = input("Would you like to add another transaction (y/n)? ")
-    csv_writer.writerows(rows)
-
-
-
-
-
+            print(f"{i}...")
+        break
+    else:
+        print("Invalid command. Try again.")
 
 
