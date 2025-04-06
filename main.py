@@ -78,9 +78,19 @@ with open("transactions.csv","a+", newline='') as csv_file:
     csv_writer.writerows(rows)
 
 
+try:
+    with open("transactions.csv","r+",newline='') as csv_read_file:
+        read_content = csv.DictReader(csv_read_file)
 
-with open("transactions.csv","r+",newline='') as csv_read_file:
-    pass
+        rows = list(read_content)
+        if not rows:
+            print("No transactions found.")
+        else:
+            for index, row in enumerate(read_content):
+                print(f'{index}. Date: {row["date"]} | Amount: ${row["amount"]} | Category: {row["category"]} | Description: {row["description"]}')
+except IOError as e:
+    print(f"Error reading file: {e}")
+
 
 
 
