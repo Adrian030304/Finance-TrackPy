@@ -110,6 +110,6 @@ while True:
 
         break
     else:
-        print("Invalid command")
+        print("Invalid command. Try again.")
 
 
