@@ -52,7 +52,8 @@ while True:
     print("|-|-| Transaction Menu |-|-|")
     print("1. Add a transaction")
     print("2. View all transactions")
-    print("3. Exit")
+    print("3. Transactions summary")
+    print("4. Exit")
 
     command = input("Enter your choice: ").strip()
     if command == "1":
@@ -99,8 +100,18 @@ while True:
                             f'{index}. Date: {row["date"]} | Amount: ${row["amount"]} | Category: {row["category"]} | Description: {row["description"]}')
         except IOError as e:
             print(f"Error reading file: {e}")
-
     elif command == "3":
+        try:
+            with open("transactions.csv","r", newline='') as csv_summary:
+                read_content = csv.DictReader(csv_summary)
+                rows = list(read_content)
+                if not rows:
+                    print("No transactions found.")
+                for row in read_content:
+                    print(row)
+        except IOError as err:
+            print(f"Error reading file: {e}")
+    elif command == "4":
         print("Exiting program...")
         for i in range(3,0,-1):
             time.sleep(1)
