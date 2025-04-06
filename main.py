@@ -99,13 +99,35 @@ while True:
                         print(f'{index}. Date: {row["date"]} | Amount: ${float(row["amount"]):.2f} | Category: {row["category"]} | Description: {row["description"]}')
         except IOError as e:
             print(f"Error reading file: {e}")
+
     elif command == "3":
         try:
             with open("transactions.csv","r", newline='') as csv_summary:
                 read_content = csv.DictReader(csv_summary)
                 read_rows = list(read_content)
+
+                expenses = float(0)
+                incomes = float(0)
+
+
                 if not read_rows:
                     print("No transactions found.")
+                else:
+                    for row in read_rows:
+                        amount = float(row["amount"])
+                        if row["category"] == "expense":
+                            expenses += amount
+                        else:
+                            incomes += amount
+                net_balance = incomes - expenses
+
+                print("\n")
+                print("## Transaction summary ##")
+                print(f'Total Income: ${incomes:.2f}')
+                print(f'Total Expense: ${expenses:.2f}')
+                print(f'Total Balance: ${net_balance:.2f}')
+                print("\n")
+
 
         except IOError as err:
             print(f"Error reading file: {e}")
